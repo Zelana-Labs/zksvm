@@ -5,6 +5,7 @@ edition = "2021"
 authors = [ "bheeeet", "swinecoder101", "donjne", "moses7054", "jeevan4476" ]
 
 [dependencies]
+<<<<<<< HEAD
 actix-web = "4.9.0"
 actix-cors = "0.7"
 base64 = "0.21"
@@ -34,3 +35,31 @@ tokio-util = "0.7"
 onchain_verifier = {path = "../onchain_verifier/programs/onchain_verifier"}
 num-bigint = "0.4.6"
 anchor-lang = "0.31.1"
+=======
+actix-web = {workspace = true}
+tokio = {workspace = true}
+serde = {workspace = true}
+serde_json = {workspace = true}
+solana-svm = {workspace = true}
+solana-program-runtime = {workspace = true}
+solana-sdk = {workspace = true}
+solana-client = {workspace = true}
+solana-compute-budget = {workspace = true}
+solana-bpf-loader-program = {workspace = true}
+env_logger = {workspace = true}
+log = {workspace = true}
+anyhow = {workspace = true}
+crossbeam = {workspace = true}
+async-channel = {workspace = true}
+solana-svm-feature-set= {workspace = true}
+solana-svm-callback = {workspace = true}
+solana-system-program = {workspace = true}
+solana-fee-structure = {workspace = true}
+solana-sdk-ids = {workspace = true}
+solana-system-interface = {workspace = true}
+dotenvy = {workspace = true}
+tokio-util = {workspace = true}
+onchain_verifier = {path = "../onchain_verifier/programs/onchain_verifier"}
+num-bigint = {workspace = true}
+anchor-lang = {workspace = true}
+>>>>>>> 5ec3ca5 (added workspace)

@@ -204,6 +204,7 @@ fn main() {
         rt2.block_on(async {
             let server = HttpServer::new(move || {
                 App::new()
+<<<<<<< HEAD
                     .wrap(
                         Cors::default()
                             .allowed_origin("http://localhost:3000")
@@ -211,6 +212,8 @@ fn main() {
                             .allowed_headers(vec!["Content-Type", "Authorization"])
                             .max_age(3600)
                     )
+=======
+>>>>>>> 5ec3ca5 (added workspace)
                     .app_data(web::Data::new(sequencer_sender.clone()))
                     .app_data(web::Data::new(rollupdb_sender.clone()))
                     .app_data(web::Data::new(frontend_sender.clone()))

@@ -5,7 +5,11 @@ use std::{
     fs,
     time::SystemTime,
 };
+<<<<<<< HEAD
 use anyhow::{anyhow, Result};
+=======
+use anyhow::{anyhow, Context, Result};
+>>>>>>> 5ec3ca5 (added workspace)
 use async_channel::Receiver;
 use crossbeam::channel::{Receiver as CBReceiver, Sender as CBSender};
 use solana_client::rpc_client::RpcClient;
@@ -26,6 +30,10 @@ use solana_svm::{
 };
 use solana_svm_feature_set::SVMFeatureSet;
 use std::{convert::TryInto, os::unix::fs::PermissionsExt};
+<<<<<<< HEAD
+=======
+use std::path::Path;
+>>>>>>> 5ec3ca5 (added workspace)
 use serde::{Deserialize, Serialize};
 use serde_json;
 
@@ -201,6 +209,7 @@ fn make_script_executable(script_path: &str) -> Result<()> {
     Ok(())
 }
 
+<<<<<<< HEAD
 fn verify_circuit_files() -> Result<()> {
     log::info!("Verifying circuit files and directories...");
     let current_dir = std::env::current_dir()?;
@@ -208,6 +217,15 @@ fn verify_circuit_files() -> Result<()> {
     let directories = ["circuit", "scripts"];
     for dir in directories {
         let dir_path = current_dir.join(dir);
+=======
+fn verify_circuit_files(base: impl AsRef<Path>) -> Result<()> {
+    log::info!("Verifying circuit files and directories...");
+    let base_dir = base.as_ref();
+    log::info!("Current working directory: {}", base_dir.display());
+    let directories = ["circuit", "scripts"];
+    for dir in directories {
+        let dir_path = base_dir.join(dir);
+>>>>>>> 5ec3ca5 (added workspace)
         if dir_path.exists() {
             log::info!("Directory exists: {}", dir_path.display());
         } else {
@@ -220,7 +238,11 @@ fn verify_circuit_files() -> Result<()> {
         "circuit/batch_system_transfer.circom"
     ];
     for file in circuit_files {
+<<<<<<< HEAD
         let file_path = current_dir.join(file);
+=======
+        let file_path = base_dir.join(file);
+>>>>>>> 5ec3ca5 (added workspace)
         if file_path.exists() {
             log::info!("Circuit file exists: {}", file_path.display());
         } else {
@@ -229,13 +251,21 @@ fn verify_circuit_files() -> Result<()> {
         }
     }
 
+<<<<<<< HEAD
     let script_path = current_dir.join("scripts/setup_and_prove.sh");
+=======
+    let script_path = base_dir.join("scripts/setup_and_prove.sh");
+>>>>>>> 5ec3ca5 (added workspace)
     if script_path.exists() {
         log::info!("Script exists: {}", script_path.display());
         let metadata = fs::metadata(&script_path)?;
         let permissions = metadata.permissions();
         if permissions.mode() & 0o111 != 0 {
+<<<<<<< HEAD
             log::info!("Script is already executable");
+=======
+            log::info!("Script is already executabb.join(filele");
+>>>>>>> 5ec3ca5 (added workspace)
         } else {
             log::info!("Script is not executable, fixing permissions...");
             make_script_executable(script_path.to_str().unwrap())?;
@@ -251,32 +281,44 @@ fn verify_circuit_files() -> Result<()> {
 }
 
 fn generate_zk_proof(batch: &TransactionBatch) -> Result<ProofData> {
+    let project_root = Path::new("rollup_core");
     log::info!("Generating ZK proof for batch: {}", batch.batch_id);
-    if let Err(e) = verify_circuit_files() {
+    if let Err(e) = verify_circuit_files("rollup_core") {
         log::error!("Circuit file verification failed: {}", e);
         return Err(e);
     }
     
     let batch_input = create_batch_circuit_input(batch)?;
 
-    fs::create_dir_all("circuit/build")?;
+    let build_dir = project_root.join("circuit/build");
+    fs::create_dir_all(&build_dir)?;
     
-    let input_file_path = format!("circuit/build/input_batch_{}.json", batch.batch_id);
-    
+   let input_file_path = build_dir.join(format!("input_{}.json", batch.batch_id));
     fs::write(&input_file_path, serde_json::to_string_pretty(&batch_input)?)?;
     
-    log::info!("Created circuit input file: {} with {} transactions", input_file_path, batch_input.len());
+   
+    log::info!(
+        "Created circuit input file: {} with {} transactions",
+        input_file_path.display(),
+        batch_input.len()
+    );
 
-    log::info!("Executing: ./scripts/setup_and_prove.sh");
-    log::info!("   Working directory: {}", std::env::current_dir().unwrap().display());
+    let script_path = Path::new("scripts/setup_and_prove.sh");
+
+
+    log::info!("Executing: {}", script_path.display());
+    log::info!("   Working directory: {}", std::env::current_dir()?.display());
     log::info!("   BATCH_ID: {}", batch.batch_id);
-    log::info!("   INPUT_FILE: {}", input_file_path);
+    log::info!("   INPUT_FILE: {}", input_file_path.display());
 
-    let output = Command::new("./scripts/setup_and_prove.sh")
-        .current_dir(".")
+
+    let output = Command::new(&script_path)
+        .current_dir(&project_root)
         .env("BATCH_ID", &batch.batch_id)
         .env("INPUT_FILE", &input_file_path)
-        .output();
+        .output().inspect_err(|e|{
+            println!("{}",e);
+        });
     
     match output {
         Ok(result) => {
@@ -288,12 +330,27 @@ fn generate_zk_proof(batch: &TransactionBatch) -> Result<ProofData> {
             if result.status.success() {
                 log::info!("ZK proof generation successful for batch: {}", batch.batch_id);
                 
+<<<<<<< HEAD
                 let proof_file_path = format!("build/proof_batch_{}.json", batch.batch_id);
                 if fs::metadata(&proof_file_path).is_ok() {
                     ProofData::from_json_file(&proof_file_path)
                         .map_err(|e| anyhow!("Failed to load proof file: {}", e))
                 } else {
                     ProofData::from_json_file("build/proof_batch.json")
+=======
+                let chosen_path =
+                        project_root.join("build/proof_batch.json");
+                    
+                println!("{}",chosen_path.display());
+                let chosen_path_str = chosen_path
+                    .to_str()
+                    .ok_or_else(|| anyhow!("no path found"))?;
+                if fs::metadata(&chosen_path).is_ok() {
+                    ProofData::from_json_file(chosen_path_str)
+                        .map_err(|e| anyhow!("Failed to load proof file: {}", e))
+                } else {
+                    ProofData::from_json_file(chosen_path_str)
+>>>>>>> 5ec3ca5 (added workspace)
                         .map_err(|e| anyhow!("Failed to load proof file: {}", e))
                 }
             } else {
@@ -420,7 +477,11 @@ pub async fn run(
     settler_sender: CBSender<SettlementJob>
 ) -> Result<()> {
     let mut tx_counter = 0u32;
+<<<<<<< HEAD
     let batch_size = 3;
+=======
+    let batch_size = 1;
+>>>>>>> 5ec3ca5 (added workspace)
     let mut transaction_batch: Vec<Transaction> = Vec::with_capacity(batch_size);
     let rpc_client_temp = RpcClient::new("https://api.devnet.solana.com".to_string());
 

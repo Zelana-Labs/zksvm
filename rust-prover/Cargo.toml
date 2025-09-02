@@ -1,5 +1,5 @@
 [package]
-name = "zk"
+name = "rust-prover"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,16 +8,17 @@ name = "snarkjs"
 path = "src/snarkjs.rs"
 
 [dependencies]
-ark-std = { version = "0.5", features = ["std"] }
-ark-ff = "0.5"
-ark-bn254 = "0.5"
-ark-relations = "0.5"
-ark-r1cs-std = "0.5"
-ark-groth16 = "0.5"
-ark-snark = "0.5"
-rand = "0.9.2"
-ark-serialize = "0.5"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-base64 = "0.22"
-ark-ec = "0.5"
+ark-std = {workspace = true}
+ark-ff = {workspace = true}
+ark-bn254 = {workspace = true}
+ark-relations = {workspace = true}
+ark-r1cs-std = {workspace = true}
+ark-groth16 = {workspace = true}
+ark-snark = {workspace = true}
+rand = {workspace = true}
+ark-serialize = {workspace = true}
+serde = {workspace = true}
+serde_json = {workspace = true}
+base64 = {workspace = true}
+ark-ec = {workspace = true}
+

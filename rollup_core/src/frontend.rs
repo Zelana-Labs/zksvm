@@ -1,5 +1,8 @@
 use std::{collections::HashMap, str::FromStr, time::Duration};
+<<<<<<< HEAD
 use base64::Engine;
+=======
+>>>>>>> 5ec3ca5 (added workspace)
 
 use actix_web::{error, web, HttpResponse, Responder};
 use async_channel::Receiver;
@@ -13,8 +16,7 @@ use solana_sdk::{
     signature::Signer,
     commitment_config::CommitmentConfig,
 };
-use solana_system_interface::instruction as system_instruction;
-
+use solana_sdk::system_instruction::transfer;
 use crate::rollupdb::RollupDBMessage;
 
 pub struct FrontendMessage {
@@ -38,6 +40,7 @@ pub struct GetTransaction {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct RollupTransaction {
     pub sender: Option<String>,
+<<<<<<< HEAD
     pub sol_transaction: Option<String>, // Changed to String for base64 input
     pub error: Option<String>,
 }
@@ -46,6 +49,9 @@ pub struct RollupTransaction {
 pub struct RollupTransactionResponse {
     pub sender: Option<String>,
     pub sol_transaction: Option<Transaction>, // Keep Transaction for responses
+=======
+    pub sol_transaction: Option<Transaction>,
+>>>>>>> 5ec3ca5 (added workspace)
     pub error: Option<String>,
 }
 
@@ -86,6 +92,7 @@ pub async fn submit_transaction(
     log::info!("Json({:?})", body);
 
     match body.sol_transaction.clone() {
+<<<<<<< HEAD
         Some(tx_base64) => {
             // Decode base64 string to Transaction
             match base64::engine::general_purpose::STANDARD.decode(&tx_base64) {
@@ -114,6 +121,15 @@ pub async fn submit_transaction(
                     log::error!("Failed to decode base64 transaction: {}", e);
                     Ok(HttpResponse::BadRequest().json(HashMap::from([
                         ("error", "Invalid base64 transaction")
+=======
+        Some(tx) => {
+            match sequencer_sender.send(tx) {
+                Ok(_) => Ok(HttpResponse::Ok().json(HashMap::from([("Transaction status", "Submitted")]))),
+                Err(e) => {
+                    log::error!("Failed to send transaction to sequencer: {}", e);
+                    Ok(HttpResponse::InternalServerError().json(HashMap::from([
+                        ("error", "Failed to submit transaction to sequencer")
+>>>>>>> 5ec3ca5 (added workspace)
                     ])))
                 }
             }
@@ -150,7 +166,11 @@ async fn create_test_transaction(_sender: &str) -> Result<Transaction, Box<dyn s
     
     log::info!("Creating test transaction: {} SOL transfer from {} to themselves", 0.001, payer.pubkey());
     
+<<<<<<< HEAD
     let instruction = system_instruction::transfer(
+=======
+    let instruction = transfer(
+>>>>>>> 5ec3ca5 (added workspace)
         &payer.pubkey(),
         &payer.pubkey(), 
         1_000_000, 
@@ -210,13 +230,21 @@ pub async fn get_transaction(
                     .map(|k| k.to_string())
                     .unwrap_or_else(|| "unknown".into());
 
+<<<<<<< HEAD
                 return ok_json(RollupTransactionResponse {
+=======
+                return ok_json(RollupTransaction {
+>>>>>>> 5ec3ca5 (added workspace)
                     sender: Some(sender),
                     sol_transaction: Some(tx), // raw tx
                     error: None,
                 });
             } else if let Some(err) = frontend_message.error {
+<<<<<<< HEAD
                 return ok_json(RollupTransactionResponse {
+=======
+                return ok_json(RollupTransaction {
+>>>>>>> 5ec3ca5 (added workspace)
                     sender: None,
                     sol_transaction: None,
                     error: Some(err),

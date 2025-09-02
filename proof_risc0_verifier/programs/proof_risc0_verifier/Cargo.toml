@@ -19,6 +19,7 @@ idl-build = ["anchor-lang/idl-build"]
 
 
 [dependencies]
+<<<<<<< HEAD
 anchor-lang = "0.31.1"
 anyhow = { version = "1.0.95", optional = true }
 ark-bn254 = { version = "0.4.0", optional = true }
@@ -38,4 +39,25 @@ num-bigint = "0.4.6"
 risc0-zkvm = { version = "1.2.0", default-features = false }
 serde = { version = "1.0.204", features = ["derive"] }
 serde_json = "1.0.120"
+=======
+anchor-lang = {workspace = true}
+anyhow = { workspace = true, optional = true }
+ark-bn254 = { version = "0.4.0", optional = true }
+ark-serialize = { version = "0.4.2", optional = true }
+hex-literal =  {workspace = true}
+num-bigint = {workspace = true  , optional = true }
+risc0-zkvm = { workspace  =true, optional = true }
+serde = { workspace = true, features = ["derive"], optional = true }
+solana-alt-bn128-bls = {workspace = true}
+solana-bn254 = {workspace = true}
+
+[dev-dependencies]
+anyhow = {workspace = true}
+ark-bn254 = "0.4.0"
+ark-serialize = "0.4.2"
+num-bigint = {workspace = true}
+risc0-zkvm = { version = "1.2.0", default-features = false }
+serde = {workspace = true }
+serde_json ={workspace = true}
+>>>>>>> 5ec3ca5 (added workspace)
 
