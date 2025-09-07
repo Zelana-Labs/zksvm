@@ -83,10 +83,7 @@ async fn settle_with_proof(
     proof_data: ProofData,
     rollupdb_sender: &CBSender<RollupDBMessage>,
 ) -> Result<SettlementResult> {
-<<<<<<< HEAD
-=======
     let project_root = PathBuf::from("rollup_core");
->>>>>>> 5ec3ca5 (added workspace)
     log::info!("Attempting proof settlement for batch: {}", settlement_job.batch_id);
     
     dotenv().ok();
@@ -100,21 +97,13 @@ async fn settle_with_proof(
     let payer = signer::keypair::read_keypair_file(path)
         .map_err(|e| anyhow::anyhow!("Failed to read keypair file: {}", e))?;
 
-<<<<<<< HEAD
-    let vk_file  = fs::File::open("build/keys/verification_key_batch.json")?;
-=======
     let vk_file  = fs::File::open(project_root.join("build/keys/verification_key_batch.json"))?;
->>>>>>> 5ec3ca5 (added workspace)
     let json_vk:JsonVerifyingKey = serde_json::from_reader(std::io::BufReader::new(vk_file))?;
 
     let verifying_key = convert_vk_to_onchain_format(&json_vk)?;
     let proof = convert_proof_to_onchain_format(&proof_data)?;
     
-<<<<<<< HEAD
-    let public_input_file = fs::File::open("build/public_batch.json")?;
-=======
     let public_input_file = fs::File::open(project_root.join("build/public_batch.json"))?;
->>>>>>> 5ec3ca5 (added workspace)
     let public_input_str : Vec<String> = serde_json::from_reader(std::io::BufReader::new(public_input_file))?;
     let public_inputs = convert_public_inputs_to_onchain_format(&public_input_str)?;
 
@@ -219,11 +208,7 @@ async fn settle_with_fallback_proof(
     let payer = signer::keypair::read_keypair_file(path)
         .map_err(|e| anyhow::anyhow!("Failed to read keypair file: {}", e))?;
 
-<<<<<<< HEAD
-    let settle_instruction = system_instruction::transfer(
-=======
     let settle_instruction = transfer(
->>>>>>> 5ec3ca5 (added workspace)
         &payer.pubkey(),
         &payer.pubkey(),
         0,

@@ -1,6 +1,5 @@
 [workspace]
 members = [
-    "rust-prover",
     "onchain_verifier/programs/onchain_verifier/",
     "proof_risc0_verifier/programs/proof_risc0_verifier/",
     "rollup_core",
