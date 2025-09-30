@@ -1,6 +1,8 @@
+import type { Transaction } from "@solana/web3.js";
+
 export interface RollupTransaction {
   sender?: string;
-  sol_transaction?: string; // Base64 serialized Solana transaction
+  sol_transaction?: Transaction; // Base64 serialized Solana transaction
   error?: string;
 }
 
@@ -32,20 +34,15 @@ export async function healthCheck(): Promise<{ [key: string]: string }> {
 
 export async function submitTransaction(
   senderName: string | null,
-  transaction: string
+  transaction: Transaction
 ): Promise<{ [key: string]: string }> {
-  const rollupTx: RollupTransaction = {
-    sender: senderName || undefined,
-    sol_transaction: transaction,
-    error: undefined,
-  };
 
   const response = await fetch(`${ROLLUP_BASE_URL}/submit_transaction`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(rollupTx),
+    body: JSON.stringify(transaction),
   });
 
   if (!response.ok) {
@@ -101,7 +98,7 @@ export interface BatchSubmissionResult {
 
 export async function submitBatchTransactions(
   senderName: string | null,
-  transactions: string[],
+  transactions: Transaction[],
   onProgress?: (completed: number, total: number) => void
 ): Promise<BatchSubmissionResult> {
   const results: Array<{ [key: string]: string } | { error: string }> = [];
