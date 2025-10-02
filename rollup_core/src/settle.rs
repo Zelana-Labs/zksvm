@@ -18,7 +18,7 @@ use tokio::time::sleep;
 use serde::Deserialize;
 use crate::rollupdb::{RollupDBMessage, UpdateProofStatusMessage, ProofStatus, ProofData};
 use solana_sdk::system_instruction::transfer;
-use onchain_verifier::{
+use zelana_verifier::{
     accounts::VerifyGroth16 as VerifyAccounts, instruction::VerifyGroth16Proof as VerifyInstruction,
     Groth16Proof, Groth16VerifyingKey, PublicInputs,
 };

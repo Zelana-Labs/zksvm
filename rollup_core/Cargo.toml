@@ -27,8 +27,8 @@ solana-system-program = {workspace = true}
 solana-fee-structure = {workspace = true}
 solana-sdk-ids = {workspace = true}
 solana-system-interface = {workspace = true}
+zelana-verifier = {workspace = true}
 dotenvy = {workspace = true}
 tokio-util = {workspace = true}
-onchain_verifier = {path = "../onchain_verifier/programs/onchain_verifier"}
 num-bigint = {workspace = true}
 anchor-lang = {workspace = true}
