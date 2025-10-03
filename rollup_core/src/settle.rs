@@ -83,7 +83,7 @@ async fn settle_with_proof(
     proof_data: ProofData,
     rollupdb_sender: &CBSender<RollupDBMessage>,
 ) -> Result<SettlementResult> {
-    let project_root = PathBuf::from("rollup_core");
+    let project_root = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     log::info!("Attempting proof settlement for batch: {}", settlement_job.batch_id);
     
     dotenv().ok();

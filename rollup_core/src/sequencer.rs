@@ -252,9 +252,9 @@ fn verify_circuit_files(base: impl AsRef<Path>) -> Result<()> {
 }
 
 fn generate_zk_proof(batch: &TransactionBatch) -> Result<ProofData> {
-    let project_root = Path::new("rollup_core");
+    let project_root = Path::new(env!("CARGO_MANIFEST_DIR"));
     log::info!("Generating ZK proof for batch: {}", batch.batch_id);
-    if let Err(e) = verify_circuit_files("rollup_core") {
+    if let Err(e) = verify_circuit_files(project_root) {
         log::error!("Circuit file verification failed: {}", e);
         return Err(e);
     }
